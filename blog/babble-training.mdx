@@ -1,0 +1,19 @@
+---
+title: The AI behind Project Babble 
+description: An article detailing how the Babble AI model was trained, future plans.
+authors: dfgHiatus
+hide_table_of_contents: false
+---
+
+One question we get frequenlty asked is how the AI powering Babble was created. This is by no means a simple question to answer, but it can be distilled. I'll do my best to give a high level oiverview of the process.
+
+At its core, Babble uses a heavily-modified EfficientNetv2-b0 network trained on ARKit blenshapes. Said model is exported as an ONNX model, which we then use in our Babble App.
+
+For the model released with Babble 2.0.5, we had a training set of approximately ~3 million faces, in a variety of lighting conditions, camera angle, taking into account facets such as face shape, VR HMD, 
+
+More recently, we have begun to accept data from users to improve our model. This has had two interesting side effects:
+- Introducing as low as 5 humans to the mix has *dramatically* improved the accuracy of our model
+- For users who submitted data, they reported the model worked exceptiobnally well for them, as if the model recognized them!
+
+Babble model 2.0.7 is expected to be trained on ~50 million synthetic images, as well as 20 or so human faces. 
+
