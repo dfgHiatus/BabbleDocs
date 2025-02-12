@@ -111,14 +111,18 @@ const config = {
                  label: 'Twitter',
                  href: 'https://twitter.com/projectBabbleVR',
               },
+              {
+                label: 'YouTube',
+                href: 'https://www.youtube.com/channel/UCv2iNebcgy9gCKPTRxejQew',
+             },
             ],
           },
           {
             title: 'More',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+               label: 'Blog',
+               to: '/blog',
               },
               {
                 label: 'GitHub',
