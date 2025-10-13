@@ -1,0 +1,97 @@
+---
+title: On mentoring interns
+description: Things I learned mentoring members of the Babble team
+authors: dfgHiatus
+hide_table_of_contents: false
+---
+
+# On mentoring interns
+
+I've been having some difficulty finding something to write about. With Baballonia getting to a stable point (v1.1.0.8 at the time of writing this), you'd think I'd have a myriad of topics to go over - this couldn't be futher from the truth. There's so much to cover, from the UX to firmware I've been overwhelmend musing over ideas for the better part of a month now. 
+
+Then, on a flight from Phoenix to Nashville something hit me - instead of tech, what about people?
+
+Prior to this, I had always acted in a individual contributor role. I have had my direct reports, but now I would be in my bosses' shoes. This is a short story of the two people I introduced to Babble - intern and apprentice.
+
+{/* truncate */}
+
+## RedInjector 
+
+Summer, one of my colleagues, indicated a student from the University of Warsaw had asked if PREL (the parent company of project babble) offered internships. Up until this point, we had been a team of 4 nose-down on our own speciallized topics - AI/ML, desktop app development just to name a few. 
+
+At the time they had asked, I was in the process of re-writing the python desktop Babble App. This was an opportunity to get someone else on board - Summer, Rames and Aero were all busy with B.A.B.A.L.L.S. (The Babble blink and look learning system), and I was working on the new desktop app by myself after work. There were a number of issues with the previous app:
+
+- We could not bring our app to android, which represents a disproportionaltely large percentgae of Social VR users.
+- FreeSimpleGUI, our UI library, lacked a number of key controls.
+
+The new desktop app was being written in Avalonia with C#/.NET. Back to Red, he is a 4th-year university student obsessed with scalable architecture and nerdy things. He needed a documented 750 hours of work, to that end  I introduced him to two projects: VRCFaceTracking.Avalonia and Baballonia
+
+### VRCFaceTracking.Avalonia
+
+As an introduction to the MVVM framework, I started Red off with a side project - VRCFaceTracking.Avalonia. You can read about it [here](blog/vrcft-avalonia.mdx), it is a cross platform version of VRCFaceTracking, a tool the social vr community is indebted to.
+
+Red picked up the MVVM framework and subsqeuent tools very quickly. Between his classes and job (did I mention he works part time too!), he understood the ins and outs of the MVVM framework in the better part of two weeks.
+ 
+He added a notification overlay system, as well as module priority - something sorely missing from the baseline VRCFaceTracking. As a side effect, you now don't need to uninstall modules anymore.
+
+A month or so into things, we both transitioned into Baballonia development. He basically rewrote the internals of the app from the ground up.
+
+A moment of reflection. During this time I was acquiring a wholly new set of skills - delegation, time management (in the sense of others). I want to talk about delegation some more. Previously, I was truly on my own. I was the author of the entire solution so to speak - my stratgey was to pick off one-off projects and hand them over to Red. I would check in daily, but I wasn't going to be a micromanager. 
+
+I belive in over communicatiomn but too much of a good thing is certainlky a bad thing. Especially when you're 8 hours apart.
+
+### Baballonia
+
+It was at this point, our second intern had arrived.
+
+## FrozenReflex
+
+Unlike Red, I was familiar with Frozen for a while - a few years to be exact. I had met Frozen in a now defunct SocialVR platform "NeosVR".
+
+4 or so months into things, while Red and I were making good progress on the desktop app, there was a key component neither of us had the expertise to work on - the VR overlay.
+
+To recap, Baballonia trains eye tracking models on device. To this end, a simple steamvr overlay was produced that collects eye information to be fed to the trainer code. Here's how it works:
+
+1) We disply a tutorial video with some text telling a user what to do.
+2) The Gaze Routine. A user has to make eye contact with a dot and move their head around
+
+:::info
+Unlike other eye tracking solutions in which a user follows a dot that moves, we had to account for varying FOVs/camera positions of different headsets. Doing this effecetiely produces the same numbers, jsut in reverse.
+:::
+
+3) The Blink Routine. The user closes their eyes for 20 seconds. We play a tone when this part ends.
+
+4) The Graph Routine. We display the realtime training progress of the model, complete with and ETA.
+
+There were a number of growing pains with this overlay
+- Users had to face forward *in their playspace* when performing an eye calibration.
+- Users could not skip the intro tutorial
+- Testing the whole overlay was an ordeal - you had to test the _entire thing all at once_, even the smallest change would take a minumum of 5 minutes to test
+
+As users brought up these issues, we began looking into alternative frameworks - rewriting the overlay was out of the question, to quote Aero it was a "Rube-Golberg contraption subject to 6 months of daily-changing requirments".
+
+This is wher Frozen comes in. We were talking on Discord, and it turns out he was in the intership market himself. Fun fact, him and I went to the same Univrsity!
+
+I was no stranger to his expertise with the Godot engine - he rewrote Resonite to use Godot as a renderer. This is just one of his many accomplishmens. That, and we wanted to uphold our commitment to open-source software, Godot was a direct choice.
+
+I floated the idea by him and he seemed to like it. A week later, we shook hands and I onboarded Frozen and got him familiar with Baballonia.
+
+::info
+Alright at the beginning I said I didn't want much to talk about in terms of tech but _man_ I learned so much about Godot working with Frozen. I come from a background working with the Unity engine.
+:::
+
+The overlay is smart enough to figure out what backend it should use. To super loosel y TL;Dr things:
+
+| Backend | Pros | Cons |
+| OpenVR | True VR overlay, can be run while a VR app is running | Windows and Linux exclusive |
+| OpenXR | Full cross platform support | Runs as a dedicated app, not an overlay |
+| OpenXR Overlay | The best of both worlds :eyes: | Godot doesn't have an implementation for this - and so far, it looks like the only people to even consider this would be Pico XR |
+
+We created a system to determine the best backend, and a debug backend for testing in screen mode
+
+Additionally, we were able to test those individual routines rather than needing to wait a whole 5 minutes to test things.
+
+Both Red and Frozen's internships end this December. I would love to work with them going into the future. 
+
+
+
